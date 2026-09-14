@@ -31,3 +31,5 @@ botaoBuscar.addEventListener("click", async function(){
             <p>Sensação: ${dados.main.feels_like}ºC</p>
         </div>
     `;
+
+});
