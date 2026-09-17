@@ -25,25 +25,46 @@ async function realizarBusca(cidade) {
         return;
     }
 
-    const iconeUrl = 'https://apenweathermap.org/img/wn/${dados.wather[0].icon}@2x.png'
+    const iconeUrl = `https://apenweathermap.org/img/wn/${dados.wather[0].icon}@2x.png`
 
-}
-
-
-    async function bsucarPrevisao(Cidade) {
-         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${CHAVE_API}&units=metric&lang=pt_br`
-         const resposta = await fetch(url);
-         const dados = await resposta.json();
-         return dados;
-    }
 
     divResultado.innerHTML = `
         <div class="card-clima">
+        <img src="${iconeUrl}" alt="${dados.wather[0].description}">
             <h3>${dados.name}</h3>
             <p>${dados.weather[0].description}</p>
             <p><strong>${dados.main.temp}ºC</strong></p>
             <p>Sensação: ${dados.main.feels_like}ºC</p>
         </div>
     `;
+        localStorage.setItem("ultimaCidade",cidade)
 
+        const previsao = await buscarPrevisao(cidade);
+        montarPrevisao(cidade)
+
+
+    }
+
+    function montarPrevisao(previsao){
+        divPrevisao.innerHTML = ""; 
+
+        if(item.dt_txt.includes("12:00:00")){
+            const data = new Date(item.dt_txt);
+            const diaSemana = data.toDateString("pt-BR",{weekday: "shot"});
+            const iconeUrl = `https://apenweathermap.org/img/wn/${item.wather[0].icon}.png`
+
+            divPrevisao += ``
+        }
+    }
+
+
+
+    async function buscarPrevisao(Cidade) {
+         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${CHAVE_API}&units=metric&lang=pt_br`
+         const resposta = await fetch(url);
+         const dados = await resposta.json();
+         return dados;
+    }
+
+    
 });
